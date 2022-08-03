@@ -34,29 +34,78 @@ double plasticityIndex = liquidLimit - plasticLimit;
 Console.WriteLine("The plasticity index of your sample is " + Convert.ToString(plasticityIndex));
 
 string fineMaterial = "";
+string plasticitySymbol = "";
 
-if (liquidLimit < 28)
+switch (liquidLimit)
 {
-    if (plasticityIndex < 8)
-    {
-        fineMaterial = "silt";
-    }
-    else
-    {
-        fineMaterial = "clay";
-    }
+    case <= 26:
+        if (plasticityIndex < 8)
+        {
+            fineMaterial = "silt";
+            plasticitySymbol = "ML";
+
+        }
+        else
+        {
+            fineMaterial = "clay";
+            plasticitySymbol = "CL";
+        }
+        break;
+    case > 26 and <= 50:
+        if (plasticityIndex < 0.73 * (liquidLimit - 20))
+        {
+            fineMaterial = "silt";
+            plasticitySymbol = "ML";
+        }
+        else if (plasticityIndex > 0.73 * (liquidLimit - 20) && liquidLimit <= 35)
+        {
+            fineMaterial = "clay";
+            plasticitySymbol = "CL";
+        }
+        else if (plasticityIndex > 0.73 * (liquidLimit - 20) && liquidLimit > 35)
+        {
+            fineMaterial = "clay";
+            plasticitySymbol = "CI";
+        }
+        break;
+    case > 50:
+        if (plasticityIndex < 0.73 * (liquidLimit - 20))
+        {
+            fineMaterial = "silt";
+            plasticitySymbol = "MH";
+        }
+        else if (plasticityIndex > 0.73 * (liquidLimit - 20))
+        {
+            fineMaterial = "clay";
+            plasticitySymbol = "CH";
+        }
+        break;
+    default:
+        break;
 }
-else
-{
-    if (liquidLimit * 0.76 - 15.2 < plasticityIndex)
-    {
-        fineMaterial = "clay";
-    }
-    else
-    {
-        fineMaterial = "silt";
-    }
-}
+
+//if (liquidLimit < 26)
+//{
+//    if (plasticityIndex < 8)
+//    {
+//        fineMaterial = "silt";
+//    }
+//    else
+//    {
+//        fineMaterial = "clay";
+//    }
+//}
+//else
+//{
+//    if (liquidLimit * 0.76 - 15.2 < plasticityIndex)
+//    {
+//        fineMaterial = "clay";
+//    }
+//    else
+//    {
+//        fineMaterial = "silt";
+//    }
+//}
 
 Console.WriteLine("Your sample is predominantly a " + fineMaterial);
 
@@ -179,6 +228,109 @@ else if (fineOrCoarse == "coarse")
 
 }
 
+
+// Group Symbol Calculation
+string groupSymbol = "";
+
+void SymbolCalculation()
+{
+    switch (primary)
+    {
+        case "GRAVEL":
+            switch (finePercent)
+            {
+                // TODO: Add coeficient of Uniformity and Curvature check
+                case <= 5: groupSymbol = "GP";
+                    break;
+
+                case >5 and <12:
+                    switch (fineMaterial)
+                    {
+                        case "clay":
+                            groupSymbol = "GP-GC";
+                            break;
+                        case "silt":
+                            groupSymbol = "GP-GM";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                case >= 12:
+                    switch (fineMaterial)
+                    {
+                        case "clay": groupSymbol = "GC";
+                            break;
+                        case "silt": groupSymbol = "GM";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            break;
+
+        case "SAND":
+            switch (finePercent)
+            {
+                // TODO: Add coeficient of Uniformity and Curvature check
+                case <= 5:
+                    groupSymbol = "SP";
+                    break;
+
+                case > 5 and < 12:
+                    switch (fineMaterial)
+                    {
+                        case "clay":
+                            groupSymbol = "SP-SC";
+                            break;
+                        case "silt":
+                            groupSymbol = "SP-SM";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                case >= 12:
+                    switch (fineMaterial)
+                    {
+                        case "clay":
+                            groupSymbol = "SC";
+                            break;
+                        case "silt":
+                            groupSymbol = "SM";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            break;
+
+        case "CLAY":
+            groupSymbol = plasticitySymbol;
+            break;
+
+        case "SILT":
+            groupSymbol = plasticitySymbol;
+            break;
+
+        default:
+            break;
+    }
+}
+
+SymbolCalculation();
+
+
 string prefixPrimarySeparator = "";
 string primarySecondarySeparator = "";
 string secondaryTraceSeparator = "";
@@ -199,4 +351,4 @@ if(trace.Length != 0)
 }
 
 
-Console.WriteLine("Your sample is classified as a:\n" + String.Join(" ", prefix) + prefixPrimarySeparator + primary + primarySecondarySeparator + String.Join(" and ", secondary) + secondaryTraceSeparator + String.Join(" and ", trace));
+Console.WriteLine("Your sample is classified as a:\n" + "[" + groupSymbol + "] " + String.Join(" ", prefix) + prefixPrimarySeparator + primary + primarySecondarySeparator + String.Join(" and ", secondary) + secondaryTraceSeparator + String.Join(" and ", trace));
