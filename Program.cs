@@ -84,29 +84,6 @@ switch (liquidLimit)
         break;
 }
 
-//if (liquidLimit < 26)
-//{
-//    if (plasticityIndex < 8)
-//    {
-//        fineMaterial = "silt";
-//    }
-//    else
-//    {
-//        fineMaterial = "clay";
-//    }
-//}
-//else
-//{
-//    if (liquidLimit * 0.76 - 15.2 < plasticityIndex)
-//    {
-//        fineMaterial = "clay";
-//    }
-//    else
-//    {
-//        fineMaterial = "silt";
-//    }
-//}
-
 Console.WriteLine("Your sample is predominantly a " + fineMaterial);
 
 string primary = "";
