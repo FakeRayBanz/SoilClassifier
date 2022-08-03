@@ -179,16 +179,24 @@ else if (fineOrCoarse == "coarse")
 
 }
 
-if (trace.Length == 0)
+string prefixPrimarySeparator = "";
+string primarySecondarySeparator = "";
+string secondaryTraceSeparator = "";
+
+if (prefix.Length != 0)
 {
-    Console.WriteLine("Your sample is classified as a:\n" + String.Join(" ", prefix) + " " + primary + " with " + String.Join(" and ", secondary));
-}
-else if(secondary.Length == 0)
-{
-    Console.WriteLine("Your sample is classified as a " + String.Join(" ", prefix) + " " + primary + ", trace " + String.Join(" and ", trace));
-}
-else
-{
-    Console.WriteLine("Your sample is classified as a " + String.Join(" ", prefix) + " " + primary + " with " + String.Join(" and ", secondary) + ", trace " + String.Join(" and ", trace));
+    prefixPrimarySeparator = " ";
 }
 
+if (secondary.Length != 0)
+{
+    primarySecondarySeparator = " with ";
+}
+
+if(trace.Length != 0)
+{
+    secondaryTraceSeparator = ", trace ";
+}
+
+
+Console.WriteLine("Your sample is classified as a:\n" + String.Join(" ", prefix) + prefixPrimarySeparator + primary + primarySecondarySeparator + String.Join(" and ", secondary) + secondaryTraceSeparator + String.Join(" and ", trace));
