@@ -130,7 +130,7 @@ void AppendGravel()
 {
     switch (gravelPercent)
     {
-        case <= 15:
+        case <= 15 and > 0:
             trace = trace.Append("gravel").ToArray();
             break;
 
@@ -151,7 +151,7 @@ void AppendSand()
 {
     switch (sandPercent)
     {
-        case <= 15:
+        case <= 15 and > 0:
             trace = trace.Append("sand").ToArray();
             break;
 
@@ -172,7 +172,7 @@ void AppendFine()
 {
     switch (finePercent)
     {
-        case <= 5:
+        case <= 5 and > 0:
             trace = trace.Append(fineMaterial).ToArray();
             break;
 
@@ -208,7 +208,7 @@ void SymbolCalculation()
             switch (finePercent)
             {
                 // TODO: Add coeficient of Uniformity and Curvature check
-                case <= 5: groupSymbol = "GP";
+                case <= 5 and > 0: groupSymbol = "GP";
                     break;
 
                 case >5 and <12:
@@ -250,7 +250,7 @@ void SymbolCalculation()
             switch (finePercent)
             {
                 // TODO: Add coeficient of Uniformity and Curvature check
-                case <= 5:
+                case <= 5 and > 0:
                     groupSymbol = "SP";
                     break;
 
