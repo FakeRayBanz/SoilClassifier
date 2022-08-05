@@ -91,10 +91,43 @@ string[] secondary = new string[] {};
 string[] prefix = new string[] {};
 string[] trace = new string[] { };
 
+
 if (fineOrCoarse == "fine")
 {
     primary = fineMaterial.ToUpper();
+}
+else if (fineOrCoarse == "coarse")
+{
+    if (gravelPercent > sandPercent)
+    {
+        primary = "GRAVEL";
+    }
+    else if (sandPercent > gravelPercent)
+    {
+        primary = "SAND";
+    }
+}
 
+switch (primary)
+{
+    case "GRAVEL":
+        AppendSand();
+        AppendFine();
+        break;
+    case "SAND":
+        AppendGravel();
+        AppendFine();
+        break;
+    case "CLAY" or "SILT":
+        AppendGravel();
+        AppendSand();
+        break;
+    default:
+        break;
+}
+
+void AppendGravel()
+{
     switch (gravelPercent)
     {
         case <= 15:
@@ -112,6 +145,10 @@ if (fineOrCoarse == "fine")
         default:
             break;
     }
+}
+
+void AppendSand()
+{
     switch (sandPercent)
     {
         case <= 15:
@@ -130,9 +167,9 @@ if (fineOrCoarse == "fine")
             break;
     }
 }
-else if (fineOrCoarse == "coarse")
-{
 
+void AppendFine()
+{
     switch (finePercent)
     {
         case <= 5:
@@ -157,52 +194,6 @@ else if (fineOrCoarse == "coarse")
         default:
             break;
     }
-
-    if (gravelPercent >= sandPercent)
-    {
-        primary = "GRAVEL";
-
-        switch (sandPercent)
-        {
-            case <= 15:
-                trace = trace.Append("sand").ToArray();
-                break;
-
-            case > 15 and <= 30:
-                secondary = secondary.Append("sand").ToArray();
-                break;
-
-            case > 30:
-                prefix = prefix.Append("sandy").ToArray();
-                break;
-
-            default:
-                break;
-        }
-    }
-    else
-    {
-        primary = "SAND";
-
-        switch (gravelPercent)
-        {
-            case <= 15:
-                trace = trace.Append("gravel").ToArray();
-                break;
-
-            case > 15 and <= 30:
-                secondary = secondary.Append("gravel").ToArray();
-                break;
-
-            case > 30:
-                prefix = prefix.Append("gravelly").ToArray();
-                break;
-
-            default:
-                break;
-        }
-    }
-
 }
 
 
@@ -226,9 +217,11 @@ void SymbolCalculation()
                         case "clay":
                             groupSymbol = "GP-GC";
                             break;
+
                         case "silt":
                             groupSymbol = "GP-GM";
                             break;
+
                         default:
                             break;
                     }
@@ -239,8 +232,10 @@ void SymbolCalculation()
                     {
                         case "clay": groupSymbol = "GC";
                             break;
+
                         case "silt": groupSymbol = "GM";
                             break;
+
                         default:
                             break;
                     }
@@ -265,9 +260,11 @@ void SymbolCalculation()
                         case "clay":
                             groupSymbol = "SP-SC";
                             break;
+
                         case "silt":
                             groupSymbol = "SP-SM";
                             break;
+
                         default:
                             break;
                     }
@@ -279,9 +276,11 @@ void SymbolCalculation()
                         case "clay":
                             groupSymbol = "SC";
                             break;
+
                         case "silt":
                             groupSymbol = "SM";
                             break;
+
                         default:
                             break;
                     }
